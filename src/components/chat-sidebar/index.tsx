@@ -7,9 +7,9 @@ import AnimatedTooltip from '../animated-tooltip'
 
 const Index = () => {
   return (
-    <div className="w-[30rem] flex flex-col justify-between relative h-screen bg-black-1">
+    <div className="w-[30rem] flex flex-col justify-between relative h-screen bg-black/15">
       <div className="text-3xl font-mono text-white flex  px-5 pt-6 items-center">&#9899; Live Chat</div>
-      <div className="mt-5 w-full scrollStyle flex flex-col gap-y-2 overflow-auto flex-grow bg-black-1 h-full">
+      <div className="mt-5 w-full scrollStyle flex flex-col gap-y-2 overflow-auto flex-grow bg-black/15 h-full">
         {messages.map((message, index) => (
           <div
             key={index}
