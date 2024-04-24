@@ -13,7 +13,27 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-    },
+      colors:{
+        "black-1": "#181A27",
+        "black-2":"#1F2438",
+        "black-3":"#131620",
+        "orange-vr":"#FD9602",
+      },
+      
+        "animation": {
+          shimmer: "shimmer 2s linear infinite"
+        },
+        "keyframes": {
+          shimmer: {
+            from: {
+              "backgroundPosition": "0 0"
+            },
+            to: {
+              "backgroundPosition": "-200% 0"
+            }
+          }
+        }
+      }
   },
   plugins: [],
 };
