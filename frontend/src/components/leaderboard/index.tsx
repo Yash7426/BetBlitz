@@ -5,6 +5,8 @@ import {address,abi} from '@/abi/bet'
 import { ethers, providers } from "ethers";
 import { useEffect,useState } from "react";
 
+// @ts-ignore
+declare var window:any;
 
 function listenForTransactionMined(transactionResponse:any, provider:any) {
     try {

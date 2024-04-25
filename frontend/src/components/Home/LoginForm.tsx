@@ -25,6 +25,7 @@ function LoginForm() {
       return;
     }
       // Requesting access to user's MetaMask accounts
+      // @ts-ignore
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
       
       // Assuming there's at least one account, get the first one
