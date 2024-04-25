@@ -1,20 +1,46 @@
 import React from 'react'
 import AboutUs from "@/components/about-us"
 import { FaGithub } from 'react-icons/fa';
-import ankit from "@/assets/ankit.jpg"
+import manan from "@/assets/manan.jpeg"
 import akhil from "@/assets/akhil.jpeg"
 import yash from "@/assets/yash.jpeg"
+import aviral from "@/assets/aviral.jpeg"
+import kudnar from "@/assets/kudnar.png"
 import Navbar from '@/components/navbar';
 const page = () => {
     const TeamMembers = [
         {
-          name: "Ankit Yadav",
-          role: "Frontend Developer",
-          imageUrl: ankit,
+          name: "Aviral Hatwal",
+          role: "Blockchain Developer",
+          imageUrl: aviral,
           social: [
             {
               name: "Github",
-              href: "https://github.com/ANKITy102",
+              href: "https://github.com/cyberviking5",
+              icon: <FaGithub />,
+            },
+          ],
+        },
+        {
+          name: "Yash Kudnar",
+          role: "Blockchain Developer",
+          imageUrl: kudnar,
+          social: [
+            {
+              name: "Github",
+              href: "https://github.com/cyberviking5",
+              icon: <FaGithub />,
+            },
+          ],
+        },
+        {
+          name: "Manan Patel",
+          role: "Frontend Developer",
+          imageUrl: manan,
+          social: [
+            {
+              name: "Github",
+              href: "https://github.com/cyberviking5",
               icon: <FaGithub />,
             },
           ],

@@ -2,50 +2,33 @@ import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/contexts/UserContext';
-import { useRoom } from '@/contexts/RoomContext';
 import axios from 'axios';
-
-export default function MyModal() {
+import NFT from "@/assets/nft.jpeg"
+import {address1 as address} from '@/abi/bet/nft';
+import { ImSpinner10 } from "react-icons/im";
+import Image from 'next/image';
+export default function MyModal({ tokenId, onclick}:{ tokenId:any,onclick:any}) {
   let [isOpen, setIsOpen] = useState(false)
-  const [title, setTitle] = useState<string>("");
-  const [id, setId] = useState<string>("");
-  const { myRooms, setMyRooms } = useRoom();
-  const router = useRouter();
-  const { userId } = useUser()
+  const [isLoading, setIsLoading] = useState(false);
 
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const newRoom = await axios.post(
-      process.env.NEXT_PUBLIC_BASE_URL + `rooms/`,
-      { title, participants: [userId], userId, url: id}
-    );
-    console.log("yash", newRoom.data)
-    setMyRooms([
-      ...myRooms,
-      newRoom.data
-    ]);
-    closeModal()
-    // router.replace("/stream");
-  }
+  
   function closeModal() {
     setIsOpen(false)
   }
 
-  function openModal() {
+  async function openModal() {
+    setIsLoading(true);
+    await onclick();
+    setIsLoading(false);  
     setIsOpen(true)
   }
 
   return (
     <>
-      <div className="my-8 z-50 inset-0 flex items-center text-white">
-        <button
-          type="button"
-          onClick={openModal}
-          className="bg-orange-vr font-[700] p-2 rounded-xl cursor-pointer  w-64 z-50"
-        >
-          Claim Reward
+      <div className=" z-50 inset-0 flex items-center text-white">
+      
+        <button type="button" onClick={openModal} className="bg-[#E4B726] flex justify-center min-w-16 items-center  text-xl font-sans text-black font-medium px-2 py-1 ml-2 rounded-lg">
+        {isLoading ? <ImSpinner10 className="animate-spin"/> :"Claim"}
         </button>
       </div>
 
@@ -60,7 +43,7 @@ export default function MyModal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/25" />
+            <div className="fixed inset-0 bg-black opacity-70" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -74,15 +57,24 @@ export default function MyModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md  pb-10  transform  rounded-2xl bg-black-3 px-6 pt-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium mb-5 text-center border-b border-gray-800 pb-3 leading-6 text-white"
                   >
-                    Your Rewards
+                    Your Reward
                   </Dialog.Title>
-
-                  
+                  <div className=" w-full flex flex-col justify-center">
+                    <Image src={NFT} height={200} width={400} alt="reward" className=" z-50" />
+                  </div>
+                    <div className="flex flex-col mt-5">
+                        <div className="text-white text-xl">Contract Address:</div>
+                        <div className="text-gray-300 text-sm">{address}</div>
+                    </div>
+                    <div className="flex flex-col mt-5">
+                    <div className="text-white text-xl">Token id:</div>
+                        <div className="text-gray-300 text-sm">{tokenId}</div>
+                    </div>
 
                 </Dialog.Panel>
               </Transition.Child>
