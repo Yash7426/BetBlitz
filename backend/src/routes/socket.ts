@@ -5,9 +5,20 @@ import http from "http";
 import { log } from "../utils/log.js";
 
 export const app = express();
-app.use(cors({
-  origin:["https://betblitz-23ae.onrender.com"]
-}));
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+
+app.use(cors(corsOpts));
 app.use(express.json())
 app.use((req, res, next) => {
   console.log(req.path, req.method)
