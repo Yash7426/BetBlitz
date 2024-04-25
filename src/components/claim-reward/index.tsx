@@ -45,7 +45,7 @@ export default function MyModal() {
           onClick={openModal}
           className="bg-orange-vr font-[700] p-2 rounded-xl cursor-pointer  w-64 z-50"
         >
-          Create Stream
+          Claim Reward
         </button>
       </div>
 
@@ -60,7 +60,7 @@ export default function MyModal() {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black opacity-80" />
+            <div className="fixed inset-0 bg-black/25" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
@@ -74,52 +74,15 @@ export default function MyModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-black-3 p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium mb-5 leading-6 text-white"
+                    className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Create Stream
+                    Your Rewards
                   </Dialog.Title>
 
-                  <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                    <div>
-                      <label
-                        htmlFor="title"
-                        className="block mb-2 text-sm font-medium text-white"
-                      >
-                        Stream Title
-                      </label>
-                      <input
-                        type="text"
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        className="bg-gray-50 focus:outline-none  text-gray-900 sm:text-sm rounded-lg border focus:border-primary block w-full p-2.5 "
-                        required={true}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="roomId"
-                        className="block mb-2 text-sm font-medium text-white"
-                      >
-                        VideoUrl
-                      </label>
-                      <input
-                        type="text"
-                        id="roomId"
-                        value={id}
-                        minLength={5}
-                        onChange={(e) => setId(e.target.value)}
-                        className="bg-gray-50  focus:outline-none text-gray-900 sm:text-sm rounded-lg border focus:border-primary block w-full p-2.5 "
-                        required={true}
-                      />
-                    </div>
-                    <button type="submit" className="btn !bg-orange-vr">
-                      Join Room
-                    </button>
-                  </form>
+                  
 
                 </Dialog.Panel>
               </Transition.Child>

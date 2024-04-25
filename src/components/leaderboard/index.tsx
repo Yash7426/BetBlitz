@@ -1,6 +1,23 @@
 import Image from "next/image";
 import CoinSrc from "@/assets/coin.png";
 import Snow from "@/assets/snow.svg";
+import {address,abi} from '@/abi/bet'
+import { ethers, providers } from "ethers";
+import { useEffect,useState } from "react";
+
+
+function listenForTransactionMined(transactionResponse:any, provider:any) {
+    try {
+        //listen for this transaction to be finished
+        return new Promise((resolve:any, reject) => {
+            provider.once(transactionResponse.hash, (transactionReciept:any) => {
+                resolve();
+            });
+        });
+    } catch (e) {
+        console.log(e);
+    }
+  }
 export const Coin = () =>{
     return (
         <Image className="inline" src={CoinSrc} alt="coin" width={40} height={40} />
@@ -8,94 +25,67 @@ export const Coin = () =>{
 }
 
 export default () => {
-
+    
     const tableItems = [
         {
             UserId: "dszld19281slz0_eq0e8we",
             bet: "30",
             payout: "75"
         },
-        {
-            UserId: "klsdf9i4k0sdfksldf_slkdf9",
-            bet: "50",
-            payout: "120"
-        },
-        {
-            UserId: "qweoiu9843klsdqw_lskdf9we",
-            bet: "20",
-            payout: "40"
-        },
-        {
-            UserId: "asdfkl234klsdfwe_eqwe0234",
-            bet: "10",
-            payout: "25"
-        },
-        {
-            UserId: "klsef9843lsdflskd_eqwei4kf",
-            bet: "100",
-            payout: "250"
-        },
-        {
-            UserId: "dszld19281slz0_eq0e8we",
-            bet: "30",
-            payout: "75"
-        },
-        {
-            UserId: "klsdf9i4k0sdfksldf_slkdf9",
-            bet: "50",
-            payout: "120"
-        },
-        {
-            UserId: "qweoiu9843klsdqw_lskdf9we",
-            bet: "20",
-            payout: "40"
-        },
-        {
-            UserId: "asdfkl234klsdfwe_eqwe0234",
-            bet: "10",
-            payout: "25"
-        },
-        {
-            UserId: "klsef9843lsdflskd_eqwei4kf",
-            bet: "100",
-            payout: "250"
-        },
-        {
-            UserId: "dszld19281slz0_eq0e8we",
-            bet: "30",
-            payout: "75"
-        },
-        {
-            UserId: "klsdf9i4k0sdfksldf_slkdf9",
-            bet: "50",
-            payout: "120"
-        },
-        {
-            UserId: "qweoiu9843klsdqw_lskdf9we",
-            bet: "20",
-            payout: "40"
-        },
-        {
-            UserId: "asdfkl234klsdfwe_eqwe0234",
-            bet: "10",
-            payout: "25"
-        },
-        {
-            UserId: "klsef9843lsdflskd_eqwei4kf",
-            bet: "100",
-            payout: "250"
-        },
-        {
-            UserId: "qwekdf9340sdfkjwe_sdfklw34",
-            bet: "5",
-            payout: "15"
-        },
-        {
-            UserId: "skldf0943lsdfskld_qweio2304",
-            bet: "50",
-            payout: "100"
-        }
     ];
+    const hexToDecimal = (hexString:any) => parseInt(hexString);
+    const [arr,setarr]=useState<any>([]);
+    const [arr1,setarr1]=useState<any>([]);
+    async function TotalAmount() {
+        try {
+            if (window.ethereum !== "undefined") {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                let number = 1;
+                // console.log(number)
+                // console.log(selectedPlayer)
+                const contract = new ethers.Contract(address, abi, signer);
+                // console.log(num1)
+                const transactionResponse = await contract.getAllDepositedAmounts()
+                setarr(transactionResponse);
+                // const transactionResponse = await contract.settleTeamResultWon();
+                await listenForTransactionMined(transactionResponse, provider);
+                console.log("Done");
+            } else {
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    async function WinningAmount() {
+        try {
+            if (window.ethereum !== "undefined") {
+                const provider = new ethers.providers.Web3Provider(window.ethereum);
+                await provider.send("eth_requestAccounts", []);
+                const signer = provider.getSigner();
+                let number = 1;
+                // console.log(number)
+                // console.log(selectedPlayer)
+                const contract = new ethers.Contract(address, abi, signer);
+                // console.log(num1)
+                const transactionResponse = await contract.getAllWinningAmounts()
+                setarr1(transactionResponse);
+                // const transactionResponse = await contract.settleTeamResultWon();
+                await listenForTransactionMined(transactionResponse, provider);
+                console.log("Done");
+            } else {
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    useEffect(()=>{
+        TotalAmount()
+        WinningAmount()
+    },[])
+    console.log("arr->", arr)
+    console.log("arr1->", arr1)
     return (
         <div className="w-full font-mono   relative mx-auto">
             <div className="py-6 relative shadow-sm  rounded-lg overflow-x-auto">
@@ -109,7 +99,7 @@ export default () => {
                             <th className="pb-3 bg-gray-900 pt-6 px-6 ">
                                 Bet Amount
                             </th>
-                            <th className="pb-3 bg-gray-900 pt-6 px-6">Multiplier</th>
+                            <th className="pb-3 bg-gray-900 pt-6 px-6">Returns</th>
                             <th className="pb-3 bg-gray-900  pt-6 px-6">
                             Payout
                             </th>
@@ -118,19 +108,22 @@ export default () => {
                     </thead>
                     <tbody className="text-gray-600 ">
                         {
-                            tableItems.map((item, idx) => {
-                                const multiplier = (parseFloat(item.payout) / parseFloat(item.bet)).toFixed(2);
+                           arr && arr1 && arr.length>0 && arr1.length && arr[0].length>0 && arr[1].map((item:any, idx:any) => {
+                               const depositAmount = hexToDecimal(item._hex)/10**18;
+                               const winningsAmount = hexToDecimal(arr1[1][idx]._hex);
+                                const multiplier =  ((winningsAmount) / depositAmount).toFixed(2);
+                                console.log(item, depositAmount, winningsAmount)
                                 return (
                                 <tr key={idx} className={(idx%2==0?"":"bg-gray-900")}>
                                     <td className="flex items-center gap-x-3  py-4 px-6 whitespace-nowrap">
                                        <div className="mt-1 text-gray-200">
-                                        {item.UserId}
-
+                                        {/* {item.UserId} */}
+                                        {arr[0][idx]}
                                        </div>
                                     </td>
-                                    <td className="px-6 py-4 text-lg font-bold font-mono text-white   whitespace-nowrap"> <Coin/> {item.bet}</td>
+                                    <td className="px-6 py-4 text-lg font-bold font-mono text-white   whitespace-nowrap"> <Coin/> {depositAmount}</td>
                                     <td className="px-6 py-4 font-bold text-lg font-mono text-gray-400 whitespace-nowrap">{multiplier}x</td>
-                                    <td className="px-6 py-4 text-cyan-500 font-mono text-lg  font-bold  whitespace-nowrap"><Coin/> {item.payout}</td>
+                                    <td className="px-6 py-4 text-cyan-500 font-mono text-lg  font-bold  whitespace-nowrap"><Coin/> {winningsAmount}</td>
 
                                 </tr>)
                             }

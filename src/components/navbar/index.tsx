@@ -25,7 +25,7 @@ export default () => {
             return;
         }
         // Requesting access to user's MetaMask accounts
-        const accounts = await window?.ethereum.request({ method: "eth_requestAccounts" });
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
 
         // Assuming there's at least one account, get the first one
         const address = accounts[0];
