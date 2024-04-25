@@ -1,11 +1,11 @@
 // YouTubePlayer.js
 
-const YouTubePlayer = ({ videoId="MC5eWI0Aqyw" }) => {
+const YouTubePlayer = ({ videoUrl }:{videoUrl:string}) => {
     return (
       <div className="video-container mx-5 ">
         <iframe
           className="w-full min-h-[50rem] h-full"
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+          src={videoUrl}
           title="YouTube Video Player"
          
           allowFullScreen

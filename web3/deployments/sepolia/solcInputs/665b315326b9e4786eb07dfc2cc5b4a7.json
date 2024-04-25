@@ -1,0 +1,35 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Betting.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ncontract Betting {\n    address private immutable owner;\n    uint256 public immutable entryFee;\n    uint256 public winner = 0;\n\n    struct User {\n        bool hasEntered;\n    }\n\n    mapping(address => User) public users;\n    mapping(address => uint256) public gamblersToAmountBet;\n    mapping(address => uint256) public BetOn;\n    mapping(address => uint) public WinningAmount;\n    address[] public gamblers;\n\n    event UserEntered(address user, uint256 amount);\n    event UserWon(address user, uint256 amount);\n    event UserLost(address user, uint256 amount);\n\n    constructor(uint256 _entryFee) {\n        owner = msg.sender;\n        entryFee = _entryFee;\n    }\n\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Only the owner can call this function\");\n        _;\n    }\n\n    function enter(uint256 Bet_On) public payable {\n        require(msg.value >= (entryFee / 10 ** 18), \"Insufficient entry fee\");\n        require(!users[msg.sender].hasEntered, \"You have already entered\");\n        gamblersToAmountBet[msg.sender] = msg.value;\n        BetOn[msg.sender] = Bet_On;\n        gamblers.push(msg.sender);\n        users[msg.sender].hasEntered = true;\n        emit UserEntered(msg.sender, msg.value);\n    }\n\n    function withdraw() public payable onlyOwner {\n        payable(owner).transfer(address(this).balance);\n    }\n\n    function getOwner() public view returns (address) {\n        return owner;\n    }\n\n    function getEntryFee() public view returns (uint256) {\n        return entryFee;\n    }\n\n    function getUserEntryStatus(address user) public view returns (bool) {\n        return users[user].hasEntered;\n    }\n\n    function getBalance() public view returns (uint256) {\n        return address(this).balance;\n    }\n\n    function setWinner(uint256 win) public onlyOwner {\n        winner = win;\n    }\n\n    function getAllWinningAmounts()\n        public\n        view\n        returns (address[] memory, uint256[] memory)\n    {\n        uint256 length = gamblers.length;\n        address[] memory addresses = new address[](length);\n        uint256[] memory amounts = new uint256[](length);\n\n        for (uint256 i = 0; i < length; i++) {\n            addresses[i] = gamblers[i];\n            amounts[i] = WinningAmount[gamblers[i]];\n        }\n\n        return (addresses, amounts);\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

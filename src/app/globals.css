@@ -67,3 +67,9 @@
 .no-visible-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+@layer components {
+  .btn {
+    @apply px-4 pt-1 h-10 text-lg font-semibold text-white rounded-full bg-[#6C63FF] hover:bg-[#6C63FF] transition duration-300;
+  }
+}

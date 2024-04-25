@@ -1,21 +1,21 @@
+"use client"
 import React from 'react'
 import ChatSidebar from "@/components/chat-sidebar"
 import Navbar from '@/components/navbar'
 import Tabs from "@/components/tabs-component"
 import YouTubePlayer from '@/components/video-player'
+import { CardHoverEffectDemo } from '@/components/card'
+import { useRoom } from '@/contexts/RoomContext'
+import MyModal from "@/components/modal"
 const page = () => {
-  return (
-    <div className="bg-black flex justify-between">
-        <div className="flex w-full flex-col h-screen">
-          
-            <Navbar/>
-            <div className="overflow-y-auto scrollStyle mt-10 mb-3">
-            <YouTubePlayer videoId='uRGqeu97Kkw'/>
-            <Tabs/>
 
-            </div>
-        </div>
-        <ChatSidebar />
+  const { rooms } = useRoom()
+
+  return (
+    <div className="min-h-screen  dark:bg-black bg-white  flex-col dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <Navbar />
+      <CardHoverEffectDemo projects={rooms} />
     </div>
   )
 }
