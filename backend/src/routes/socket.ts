@@ -5,7 +5,9 @@ import http from "http";
 import { log } from "../utils/log.js";
 
 export const app = express();
-app.use(cors());
+app.use(cors({
+  origin:"*"
+}));
 app.use(express.json())
 app.use((req, res, next) => {
   console.log(req.path, req.method)
