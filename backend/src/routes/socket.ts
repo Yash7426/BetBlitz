@@ -6,7 +6,7 @@ import { log } from "../utils/log.js";
 
 export const app = express();
 app.use(cors({
-  origin:"*"
+  origin:["https://betblitz-23ae.onrender.com"]
 }));
 app.use(express.json())
 app.use((req, res, next) => {
